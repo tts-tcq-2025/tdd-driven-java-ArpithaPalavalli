@@ -27,76 +27,22 @@ Establish quality parameters:
 - Ensure 100% line and branch coverage at every step
 
  ## Test Specification
-    Empty String Input
-        Input: ""
-        Expected Output: 0
-        Description: Verify that the calculator returns 0 for an empty string.
-
-    Single Number Input
-        Input: "1"
-        Expected Output: 1
-        Description: Verify that the calculator returns the same number when only one number is provided.
-
-    Two Number Input (Comma Separated)
-        Input: "1,2"
-        Expected Output: 3
-        Description: Verify that the calculator correctly sums two comma-separated numbers.
-
-    Multiple Numbers Input (Comma and New Line Separated)
-        Input: "1\n2,3"
-        Expected Output: 6
-        Description: Verify that the calculator correctly sums numbers separated by both commas and new lines.
-
-    Input with New Line Only
-        Input: "1\n2\n3"
-        Expected Output: 6
-        Description: Verify that the calculator correctly sums numbers separated only by new lines.
-
-    Negative Number Input
-        Input: "1,-2"
-        Expected Output: Exception with message: "negatives not allowed: -2"
-        Description: Verify that the calculator throws an exception when a negative number is included in the input.
-
-    Multiple Negative Numbers Input
-        Input: "1,-2,-3"
-        Expected Output: Exception with message: "negatives not allowed: -2, -3"
-        Description: Verify that the calculator throws an exception listing all negative numbers.
-
-    Numbers Greater than 1000
-        Input: "2,1001"
-        Expected Output: 2
-        Description: Verify that numbers greater than 1000 are ignored in the sum.
-
-    Custom Delimiter (Single Character)
-        Input: "//;\n1;2"
-        Expected Output: 3
-        Description: Verify that the calculator accepts a custom delimiter specified at the beginning.
-
-    Custom Delimiter (Multi-Character)
-        Input: "//[***]\n12***3"
-        Expected Output: 15
-        Description: Verify that the calculator accepts a multi-character custom delimiter.
-
-    Ignoring Large Numbers with Custom Delimiter
-        Input: "//;\n2;1001;3"
-        Expected Output: 5
-        Description: Verify that numbers greater than 1000 are ignored while using a custom delimiter.
-
-    Negative Number with Custom Delimiter
-        Input: "//;\n1;-2"
-        Expected Output: Exception with message: "negatives not allowed: -2"
-        Description: Verify that the calculator throws an exception when a negative number is included with a custom delimiter.
-
-    Mixture of Delimiters
-        Input: "//;\n1;2\n3,1001"
-        Expected Output: 6
-        Description: Verify that the calculator handles a mixture of delimiters correctly.
-
-    Custom Delimiter Only (Without Numbers)
-        Input: "//;\n"
-        Expected Output: 0
-        Description: Verify that the calculator returns 0 when only a custom delimiter is provided without numbers.
- 
+ | Test Case ID | Description                                            | Given Input                   | When Action         | Expected Outcome                                          |
+|--------------|--------------------------------------------------------|-------------------------------|---------------------|----------------------------------------------------------|
+| TC001        | Empty String Input                                     | `""`                          | Calculator is called | Result should be `0`                                     |
+| TC002        | Single Number Input                                    | `"1"`                         | Calculator is called | Result should be `1`                                     |
+| TC003        | Two Number Input (Comma Separated)                    | `"1,2"`                       | Calculator is called | Result should be `3`                                     |
+| TC004        | Multiple Numbers Input (Comma and New Line Separated) | `"1\n2,3"`                    | Calculator is called | Result should be `6`                                     |
+| TC005        | Input with New Line Only                               | `"1\n2\n3"`                   | Calculator is called | Result should be `6`                                     |
+| TC006        | Negative Number Input                                  | `"1,-2"`                      | Calculator is called | Exception message should be "negatives not allowed: -2" |
+| TC007        | Multiple Negative Numbers Input                        | `"1,-2,-3"`                   | Calculator is called | Exception message should be "negatives not allowed: -2, -3" |
+| TC008        | Numbers Greater than 1000                             | `"2,1001"`                    | Calculator is called | Result should be `2`                                     |
+| TC009        | Custom Delimiter (Single Character)                   | `"//;\n1;2"`                  | Calculator is called | Result should be `3`                                     |
+| TC010        | Custom Delimiter (Multi-Character)                    | `"//[***]\n12***3"`           | Calculator is called | Result should be `15`                                    |
+| TC011        | Ignoring Large Numbers with Custom Delimiter           | `"//;\n2;1001;3"`             | Calculator is called | Result should be `5`                                     |
+| TC012        | Negative Number with Custom Delimiter                  | `"//;\n1;-2"`                 | Calculator is called | Exception message should be "negatives not allowed: -2" |
+| TC013        | Mixture of Delimiters                                  | `"//;\n1;2\n3,1001"`          | Calculator is called | Result should be `6`                                     |
+| TC014        | Custom Delimiter Only (Without Numbers)               | `"//;\n"`                     | Calculator is called | Result should be `0`                                     |
 
 Start Test-driven approach
 
