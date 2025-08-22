@@ -1,6 +1,9 @@
 package calculator;
 
 public class StringCalculator {
+     private StringCalculator() {        // private constructor
+        throw new AssertionError("Utility class should not be instantiated");
+    }
 
     /**
      * Adds numbers from a string input.
