@@ -6,12 +6,15 @@ import static org.junit.Assert.*;
 public class StringCalculatorTest {
 
     @Test
-    public void testEmptyStringReturnsZero() {
+    public void TC001_emptyStringInput_returnsZero() {
+        // Arrange
         String input = "";
-        int expectedValue = 0;
+        int expected = 0;
 
-        int actualValue = StringCalculator.add(input);
+        // Act
+        int actual = StringCalculator.add(input);
 
-        assertEquals(expectedValue, actualValue);
+        // Assert
+        assertEquals("TC001 Failed: Empty string should return 0", expected, actual);
     }
 }
