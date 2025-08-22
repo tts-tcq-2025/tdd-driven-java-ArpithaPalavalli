@@ -1,6 +1,6 @@
 package calculator;
 
-public class StringCalculator {
+public final class StringCalculator {
      private StringCalculator() {        // private constructor
         throw new AssertionError("Utility class should not be instantiated");
     }
