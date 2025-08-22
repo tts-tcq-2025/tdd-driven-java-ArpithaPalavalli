@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 public class StringCalculatorTest {
 
     @Test
-    public void emptyStringInput_returnsZero() {
+    public void emptyStringInputReturnsZero() {
         // Arrange
         String input = "";
         int expected = 0;
