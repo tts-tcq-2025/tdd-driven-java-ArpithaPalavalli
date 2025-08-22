@@ -1,12 +1,12 @@
 package calculator;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class StringCalculatorTest {
 
     @Test
-    public void TC001_emptyStringInput_returnsZero() {
+    public void emptyStringInput_returnsZero() {
         // Arrange
         String input = "";
         int expected = 0;
