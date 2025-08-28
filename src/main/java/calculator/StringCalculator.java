@@ -33,7 +33,7 @@ public final class StringCalculator {
         if (!input.startsWith("//")) {
             return new ParsedInput(DEFAULT_DELIMITER, input);
         }
-        int newlineIndex = input.indexOf('\\n');
+        int newlineIndex = input.indexOf('\n');   // ✅ FIXED HERE
         String delimiterSpec = input.substring(2, newlineIndex);
         String delimiter = buildDelimiterRegex(delimiterSpec) + "|" + DEFAULT_DELIMITER;
         String numbers = input.substring(newlineIndex + 1);
