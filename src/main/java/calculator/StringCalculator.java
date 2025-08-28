@@ -13,7 +13,9 @@ public final class StringCalculator {
     }
 
     public static int add(String input) {
-        if (input == null || input.isEmpty()) return 0;
+        if (input == null || input.isEmpty()) {
+            return 0;
+        }
 
         // Default delimiters
         List<String> delimiters = new ArrayList<>(List.of(",", "\n"));
