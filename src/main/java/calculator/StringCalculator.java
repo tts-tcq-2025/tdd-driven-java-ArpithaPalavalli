@@ -1,82 +1,79 @@
 package calculator;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class StringCalculator {
-private StringCalculator() {
-throw new AssertionError("Utility class should not be instantiated");
-}
+    private static final String DEFAULT_DELIMITER = ",|\n";
 
+    private StringCalculator() {
+        throw new AssertionError("Utility class should not be instantiated");
+    }
 
-/**
-* Adds numbers from a string input.
-* Supports custom delimiters, ignores numbers > 1000, and throws on negatives.
-*/
-public static int add(String input) {
-if (input == null || input.isEmpty()) {
-return 0; // ✅ TC001
-}
+    public static int add(String input) {
+        if (input == null || input.isEmpty()) {
+            return 0;
+        }
 
+        ParsedInput parsed = parseInput(input);
+        List<Integer> numbers = extractNumbers(parsed.numbers, parsed.delimiter);
 
-String delimiter = ",|\\n"; // default delimiters: comma or newline
-String numbers = input;
+        validateNoNegatives(numbers);
+        return numbers.stream()
+                .filter(n -> n <= 1000)
+                .mapToInt(Integer::intValue)
+                .sum();
+    }
 
+    private static ParsedInput parseInput(String input) {
+        if (!input.startsWith("//")) {
+            return new ParsedInput(DEFAULT_DELIMITER, input);
+        }
+        int newlineIndex = input.indexOf('\n');
+        String delimiterSpec = input.substring(2, newlineIndex);
+        String delimiter = buildDelimiterRegex(delimiterSpec);
+        String numbers = input.substring(newlineIndex + 1);
+        return new ParsedInput(delimiter, numbers);
+    }
 
-// ✅ Handle custom delimiter syntax
-if (input.startsWith("//")) {
-Matcher m = Pattern.compile("//(\\[.*?])+|//(.)\\n").matcher(input);
-if (m.find()) {
-if (m.group(1) != null) { // multi-char delimiters, possibly multiple
-Matcher multi = Pattern.compile("\\[(.*?)]").matcher(input);
-StringBuilder regex = new StringBuilder();
-while (multi.find()) {
-if (regex.length() > 0) regex.append("|");
-regex.append(Pattern.quote(multi.group(1)));
-}
-delimiter = regex.toString();
-} else if (m.group(2) != null) { // single-char delimiter
-delimiter = Pattern.quote(m.group(2));
-}
-}
-numbers = input.substring(input.indexOf("\\n") + 1);
-}
+    private static String buildDelimiterRegex(String spec) {
+        if (spec.startsWith("[") && spec.endsWith("]")) {
+            Matcher m = Pattern.compile("\\[(.*?)]").matcher(spec);
+            List<String> delimiters = new ArrayList<>();
+            while (m.find()) {
+                delimiters.add(Pattern.quote(m.group(1)));
+            }
+            return String.join("|", delimiters);
+        }
+        return Pattern.quote(spec);
+    }
 
+    private static List<Integer> extractNumbers(String input, String delimiter) {
+        return Stream.of(input.split(delimiter))
+                .filter(s -> !s.isEmpty())
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+    }
 
-// ✅ Split numbers by delimiter(s)
-String[] tokens = numbers.split(delimiter);
+    private static void validateNoNegatives(List<Integer> numbers) {
+        List<Integer> negatives = numbers.stream()
+                .filter(n -> n < 0)
+                .collect(Collectors.toList());
+        if (!negatives.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "negatives not allowed: " +
+                    negatives.stream()
+                             .map(String::valueOf)
+                             .collect(Collectors.joining(", "))
+            );
+        }
+    }
 
-
-int sum = 0;
-List<Integer> negatives = new ArrayList<>();
-
-
-for (String token : tokens) {
-if (token.isEmpty()) continue;
-
-
-int num = Integer.parseInt(token);
-
-
-if (num < 0) {
-negatives.add(num);
-} else if (num <= 1000) { // ✅ Ignore >1000 (TC008, TC011)
-sum += num;
-}
-}
-
-
-if (!negatives.isEmpty()) {
-throw new IllegalArgumentException("negatives not allowed: " + negatives.toString().replace("[", "").replace("]", ""));
-}
-
-
-return sum;
-}
+    private record ParsedInput(String delimiter, String numbers) {}
 }
 
 
