@@ -3,6 +3,8 @@ package calculator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class StringCalculator {
 
@@ -11,20 +13,15 @@ public final class StringCalculator {
     }
 
     public static int add(String input) {
-        if (input == null || input.isEmpty()) {
-            return 0;
-        }
+        if (input == null || input.isEmpty()) return 0;
 
+        // Default delimiters
+        List<String> delimiters = new ArrayList<>(List.of(",", "\n"));
         String numbers = input;
-        List<String> delimiters = new ArrayList<>();
-        delimiters.add(","); // default delimiter
-        delimiters.add("\n");
 
         if (input.startsWith("//")) {
             int delimiterEndIndex = input.indexOf("\n");
-            String delimiterPart = input.substring(2, delimiterEndIndex);
-
-            delimiters.addAll(parseDelimiters(delimiterPart));
+            delimiters.addAll(parseDelimiters(input.substring(2, delimiterEndIndex)));
             numbers = input.substring(delimiterEndIndex + 1);
         }
 
@@ -32,50 +29,37 @@ public final class StringCalculator {
     }
 
     private static List<String> parseDelimiters(String delimiterPart) {
-        List<String> delimiters = new ArrayList<>();
-        if (delimiterPart.startsWith("[") && delimiterPart.endsWith("]")) {
-            String[] tokens = delimiterPart.split("]\\[");
-            for (String token : tokens) {
-                delimiters.add(token.replace("[", "").replace("]", ""));
-            }
-        } else {
-            delimiters.add(delimiterPart);
-        }
-        return delimiters;
+        return delimiterPart.startsWith("[") && delimiterPart.endsWith("]")
+                ? Stream.of(delimiterPart.split("]\\["))
+                        .map(d -> d.replace("[", "").replace("]", ""))
+                        .toList()
+                : List.of(delimiterPart);
     }
 
     private static int sumNumbers(String numbers, List<String> delimiters) {
-        String regex = buildDelimiterRegex(delimiters);
-        String[] tokens = numbers.split(regex);
+        String regex = delimiters.stream()
+                .map(Pattern::quote)
+                .collect(Collectors.joining("|"));
 
-        List<Integer> negatives = new ArrayList<>();
-        int sum = 0;
+        List<Integer> parsedNumbers = Stream.of(numbers.split(regex))
+                .filter(s -> !s.isEmpty())
+                .map(Integer::parseInt)
+                .toList();
 
-        for (String token : tokens) {
-            if (!token.isEmpty()) {
-                int num = Integer.parseInt(token);
-                if (num < 0) {
-                    negatives.add(num);
-                } else if (num <= 1000) {
-                    sum += num;
-                }
-            }
-        }
+        List<Integer> negatives = parsedNumbers.stream()
+                .filter(n -> n < 0)
+                .toList();
 
         if (!negatives.isEmpty()) {
-            throw new IllegalArgumentException("Negatives not allowed: " + negatives);
+            throw new IllegalArgumentException(
+                    "negatives not allowed: " +
+                    negatives.stream().map(String::valueOf).collect(Collectors.joining(", "))
+            );
         }
-        return sum;
-    }
 
-    private static String buildDelimiterRegex(List<String> delimiters) {
-        StringBuilder regex = new StringBuilder();
-        for (int i = 0; i < delimiters.size(); i++) {
-            if (i > 0) {
-                regex.append("|");
-            }
-            regex.append(Pattern.quote(delimiters.get(i)));
-        }
-        return regex.toString();
+        return parsedNumbers.stream()
+                .filter(n -> n <= 1000)
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 }
