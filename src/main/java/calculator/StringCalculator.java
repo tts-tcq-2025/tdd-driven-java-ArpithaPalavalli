@@ -1,29 +1,4 @@
 package calculator;
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-
-public final class StringCalculator {
-private static final String DEFAULT_DELIMITER = ",|\\n";
-
-
-private StringCalculator() {
-throw new AssertionError("Utility class should not be instantiated");
-}
-
-
-public static int add(String input) {
-if (input == null || input.isEmpty()) {
-return 0;
-}
-
-
 ParsedInput parsed = parseInput(input);
 List<Integer> numbers = extractNumbers(parsed.numbers(), parsed.delimiter());
 
@@ -42,7 +17,7 @@ return new ParsedInput(DEFAULT_DELIMITER, input);
 }
 int newlineIndex = input.indexOf('\n');
 String delimiterSpec = input.substring(2, newlineIndex);
-String delimiter = buildDelimiterRegex(delimiterSpec);
+String delimiter = buildDelimiterRegex(delimiterSpec) + "|" + DEFAULT_DELIMITER;
 String numbers = input.substring(newlineIndex + 1);
 return new ParsedInput(delimiter, numbers);
 }
