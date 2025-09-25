@@ -26,7 +26,23 @@ Establish quality parameters:
 
 - Ensure 100% line and branch coverage at every step
 
-  
+ ## Test Specification
+ | Test Case ID | Description                                            | Given Input                   | When Action         | Expected Outcome                                          |
+|--------------|--------------------------------------------------------|-------------------------------|---------------------|----------------------------------------------------------|
+| TC001        | Empty String Input                                     | `""`                          | Calculator is called | Result should be `0`                                     |
+| TC002        | Single Number Input                                    | `"1"`                         | Calculator is called | Result should be `1`                                     |
+| TC003        | Two Number Input (Comma Separated)                    | `"1,2,3"`                       | Calculator is called | Result should be `6`                                     |
+| TC004        | Multiple Numbers Input (Comma and New Line Separated) | `"1\n2,3"`                    | Calculator is called | Result should be `6`                                     |
+| TC005        | Input with New Line Only                               | `"1\n2\n3"`                   | Calculator is called | Result should be `6`                                     |
+| TC006        | Negative Number Input                                  | `"1,-2"`                      | Calculator is called | Exception message should be "negatives not allowed: -2" |
+| TC007        | Multiple Negative Numbers Input                        | `"1,-2,-3"`                   | Calculator is called | Exception message should be "negatives not allowed: -2, -3" |
+| TC008        | Numbers Greater than 1000                             | `"2,1001"`                    | Calculator is called | Result should be `2`                                     |
+| TC009        | Custom Delimiter (Single Character)                   | `"//;\n1;2"`                  | Calculator is called | Result should be `3`                                     |
+| TC010        | Custom Delimiter (Multi-Character)                    | `"//[***]\n12***3"`           | Calculator is called | Result should be `15`                                    |
+| TC011        | Ignoring Large Numbers with Custom Delimiter           | `"//;\n2;1001;3"`             | Calculator is called | Result should be `5`                                     |
+| TC012        | Negative Number with Custom Delimiter                  | `"//;\n1;-2"`                 | Calculator is called | Exception message should be "negatives not allowed: -2" |
+| TC013        | Mixture of Delimiters                                  | `"//;\n1;2\n3,1001"`          | Calculator is called | Result should be `6`                                     |
+| TC014        | Custom Delimiter Only (Without Numbers)               | `"//;\n"`                     | Calculator is called | Result should be `0`                                     |
 
 Start Test-driven approach
 
