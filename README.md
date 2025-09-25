@@ -31,7 +31,7 @@ Establish quality parameters:
 |--------------|--------------------------------------------------------|-------------------------------|---------------------|----------------------------------------------------------|
 | TC001        | Empty String Input                                     | `""`                          | Calculator is called | Result should be `0`                                     |
 | TC002        | Single Number Input                                    | `"1"`                         | Calculator is called | Result should be `1`                                     |
-| TC003        | Two Number Input (Comma Separated)                    | `"1,2"`                       | Calculator is called | Result should be `3`                                     |
+| TC003        | Two Number Input (Comma Separated)                    | `"1,2,3"`                       | Calculator is called | Result should be `6`                                     |
 | TC004        | Multiple Numbers Input (Comma and New Line Separated) | `"1\n2,3"`                    | Calculator is called | Result should be `6`                                     |
 | TC005        | Input with New Line Only                               | `"1\n2\n3"`                   | Calculator is called | Result should be `6`                                     |
 | TC006        | Negative Number Input                                  | `"1,-2"`                      | Calculator is called | Exception message should be "negatives not allowed: -2" |
