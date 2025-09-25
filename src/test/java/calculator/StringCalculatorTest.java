@@ -35,8 +35,8 @@ import static org.junit.Assert.fail;
     @Test
     public void twoNumbersInputReturnsSum() {
         // Arrange
-        String input = "1,2";
-        int expected = 3;
+        String input = "1,2,3";
+        int expected = 6;
 
         // Act
         int actual = StringCalculator.add(input);
